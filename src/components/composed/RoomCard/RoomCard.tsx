@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -7,6 +8,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 interface RoomCardProps {
   image: string;
@@ -23,6 +25,7 @@ export default function RoomCard({
   beds,
   description,
 }: RoomCardProps) {
+  const router = useRouter();
   return (
     <Card sx={{ display: "flex" }}>
       <CardMedia
@@ -51,7 +54,11 @@ export default function RoomCard({
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => router.push("/pokoj")}
+          >
             Zarezerwuj
           </Button>
         </CardActions>
