@@ -1,5 +1,5 @@
 "use client";
-import { FilterList as Filter } from "@mui/icons-material";
+import FilterList from "@mui/icons-material/FilterList";
 import {
   Box,
   Drawer,
@@ -59,7 +59,7 @@ export default function SearchBar() {
           sx={{ flex: 1 }}
         />
         <IconButton onClick={() => setDrawerOpen(true)}>
-          <Filter />
+          <FilterList />
         </IconButton>
         <Drawer
           anchor="right"
