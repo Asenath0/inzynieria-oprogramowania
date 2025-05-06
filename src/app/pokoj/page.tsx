@@ -1,9 +1,12 @@
+"use client";
 import Header from "@/components/composed/Header/Header";
 import SearchBar from "@/components/composed/SearchBar/SearchBar";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className={styles.page}>
       <Header />
@@ -129,6 +132,7 @@ export default function Home() {
           fullWidth
           variant="contained"
           sx={{ width: "70%", margin: "2rem 15%" }}
+          onClick={() => router.push("/rezerwacja")}
         >
           Wynajmij
         </Button>

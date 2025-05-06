@@ -59,7 +59,7 @@ export default function RoomCard({
             color="primary"
             onClick={() => router.push("/pokoj")}
           >
-            Zarezerwuj
+            Szczegóły
           </Button>
         </CardActions>
       </Box>

@@ -1,0 +1,26 @@
+.page {
+  --button-secondary-hover: #f2f2f2;
+
+  min-height: 100svh;
+  font-family: var(--font-geist-sans);
+}
+
+.main {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.main h1 {
+  color: var(--accent);
+  margin-bottom: 1rem;
+  margin-top: 3em;
+  text-align: center;
+}
+
+.main div {
+  margin: 3rem auto;
+  text-align: center;
+}

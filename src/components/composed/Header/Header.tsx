@@ -14,7 +14,7 @@ export default function Header() {
           borderBottom: "1px solid #D4C8B0",
         }}
       >
-        <Box>
+        <Box onClick={() => router.push("/")}>
           <Image src="/logo.svg" alt="Logo" width={100} height={40} />
         </Box>
 

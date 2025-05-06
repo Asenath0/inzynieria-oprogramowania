@@ -1,0 +1,95 @@
+.page {
+  --button-secondary-hover: #f2f2f2;
+
+  min-height: 100svh;
+  font-family: var(--font-geist-sans);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 20rem;
+}
+
+.image {
+  height: 50vh;
+  width: 60%;
+  border-radius: 20px;
+}
+
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sectionReverse {
+  flex-direction: row-reverse;
+}
+
+.circleBackground {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-color: var(--foreground);
+  opacity: 0.1;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.circleBackgroundRight {
+  right: 6%;
+}
+
+.circleBackgroundLeft {
+  left: 6%;
+}
+
+.text {
+  flex: 1;
+  text-align: center;
+}
+
+.box {
+  border: 1px solid #d4c8b0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.boxColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summary {
+  font-weight: bold;
+}
