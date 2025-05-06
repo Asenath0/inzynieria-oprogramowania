@@ -1,8 +1,8 @@
 "use client";
 import Header from "@/components/composed/Header/Header";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import BedTimeIcon from "@mui/icons-material/BedTime";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import HotelIcon from "@mui/icons-material/Hotel";
 import PeopleIcon from "@mui/icons-material/People";
 import {
@@ -55,7 +55,7 @@ export default function Home() {
           </div>
           <div className={styles.boxColumn}>
             <Typography>
-              <BedTimeIcon /> Liczba nocy: <strong>2</strong>
+              <DarkModeIcon /> Liczba nocy: <strong>2</strong>
             </Typography>
             <Typography>
               <PeopleIcon /> Liczba osób: <strong>{room.beds}</strong>
