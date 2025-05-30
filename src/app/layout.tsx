@@ -1,3 +1,4 @@
+import { SearchBarProvider } from "@/components/providers/SearchBarValues";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import ThemeProviderWrapper from "../components/providers/ThemeProviderWrapper";
@@ -26,7 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+        <ThemeProviderWrapper>
+          <SearchBarProvider>{children}</SearchBarProvider>
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { useSearchBar } from "@/components/providers/SearchBarValues";
 import FilterList from "@mui/icons-material/FilterList";
 import {
   Box,
@@ -16,11 +17,17 @@ import { useState } from "react";
 
 export default function SearchBar() {
   const [priceRange, setPriceRange] = useState<number[]>([50, 500]);
-  const [arrivalDate, setArrivalDate] = useState<string>("2025-05-08");
-  const [departureDate, setDepartureDate] = useState<string>("2025-05-10");
   const [standard, setStandard] = useState<string>("");
-  const [beds, setBeds] = useState<number>(1);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const {
+    arrivalDate,
+    setArrivalDate,
+    departureDate,
+    setDepartureDate,
+    beds,
+    setBeds,
+  } = useSearchBar();
 
   const handlePriceChange = (event: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);

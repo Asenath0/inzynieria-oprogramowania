@@ -7,7 +7,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#D92D3F",
-      contrastText: "#e8e2d6",
+      contrastText: "#eeeeee",
     },
     secondary: {
       main: "#262951",
@@ -21,7 +21,7 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "#26295111",
+          backgroundColor: "#ffffff",
         },
       },
     },

@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/components/composed/Header/Header";
+import { useSearchBar } from "@/components/providers/SearchBarValues";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -37,6 +38,18 @@ export default function Home() {
     setSelectedOption(event.target.value);
   };
 
+  const { arrivalDate, departureDate, beds } = useSearchBar();
+
+  // Calculate the difference in days between arrivalDate and departureDate
+  const getDaysDifference = (start: string, end: string) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    // Calculate difference in milliseconds and convert to days
+    const diffTime = endDate.getTime() - startDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return isNaN(diffDays) ? 0 : diffDays;
+  };
+
   return (
     <div className={styles.page}>
       <Header />
@@ -47,18 +60,19 @@ export default function Home() {
         <Box className={styles.box}>
           <div className={styles.boxColumn}>
             <Typography>
-              <CalendarMonthIcon /> Przyjazd: <strong>08 maj 2025r.</strong>
+              <CalendarMonthIcon /> Przyjazd: <strong>{arrivalDate}</strong>
             </Typography>
             <Typography>
-              <CalendarMonthIcon /> Odjazd: <strong>10 maj 2025r.</strong>
+              <CalendarMonthIcon /> Odjazd: <strong>{departureDate}</strong>
             </Typography>
           </div>
           <div className={styles.boxColumn}>
             <Typography>
-              <DarkModeIcon /> Liczba nocy: <strong>2</strong>
+              <DarkModeIcon /> Liczba nocy:{" "}
+              <strong>{getDaysDifference(arrivalDate, departureDate)}</strong>
             </Typography>
             <Typography>
-              <PeopleIcon /> Liczba osób: <strong>{room.beds}</strong>
+              <PeopleIcon /> Liczba osób: <strong>{beds}</strong>
             </Typography>
           </div>
           <div className={styles.boxColumn}>
