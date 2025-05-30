@@ -19,6 +19,41 @@ export default function SearchBar() {
   const [priceRange, setPriceRange] = useState<number[]>([50, 500]);
   const [standard, setStandard] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [arrivalDateError, setArrivalDateError] = useState("");
+  const [departureDateError, setDepartureDateError] = useState("");
+
+  const validateArrivalDate = (value: string) => {
+    if (!value.trim()) {
+      return "Data przyjazdu jest wymagana";
+    }
+    return "";
+  };
+
+  const validateDepartureDate = (arrival: string, departure: string) => {
+    if (!departure.trim()) {
+      return "Data wyjazdu jest wymagana";
+    }
+
+    if (arrival && departure <= arrival) {
+      return "Data wyjazdu musi być późniejsza niż data przyjazdu";
+    }
+    return "";
+  };
+
+  const handleArrivalDateChange = (e: any) => {
+    const value = e.target.value;
+    setArrivalDate(value);
+    setArrivalDateError(validateArrivalDate(value));
+    if (departureDate) {
+      setDepartureDateError(validateDepartureDate(value, departureDate));
+    }
+  };
+
+  const handleDepartureDateChange = (e: any) => {
+    const value = e.target.value;
+    setDepartureDate(value);
+    setDepartureDateError(validateDepartureDate(arrivalDate, value));
+  };
 
   const {
     arrivalDate,
@@ -48,14 +83,18 @@ export default function SearchBar() {
           label="Data przyjazdu"
           type="date"
           value={arrivalDate}
-          onChange={(e) => setArrivalDate(e.target.value)}
+          onChange={handleArrivalDateChange}
+          error={!!arrivalDateError}
+          helperText={arrivalDateError}
           sx={{ flex: 1 }}
         />
         <TextField
           label="Data wyjazdu"
           type="date"
           value={departureDate}
-          onChange={(e) => setDepartureDate(e.target.value)}
+          onChange={handleDepartureDateChange}
+          error={!!departureDateError}
+          helperText={departureDateError}
           sx={{ flex: 1 }}
         />
         <TextField

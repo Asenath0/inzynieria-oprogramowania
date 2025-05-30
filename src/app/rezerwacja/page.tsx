@@ -33,6 +33,15 @@ const room = {
 export default function Home() {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState("payLater");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [surnameError, setSurnameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
@@ -40,15 +49,67 @@ export default function Home() {
 
   const { arrivalDate, departureDate, beds } = useSearchBar();
 
-  // Calculate the difference in days between arrivalDate and departureDate
   const getDaysDifference = (start: string, end: string) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
-    // Calculate difference in milliseconds and convert to days
     const diffTime = endDate.getTime() - startDate.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return isNaN(diffDays) ? 0 : diffDays;
   };
+
+
+  const validateName = (value: string) => {
+    if (!value.trim()) {
+        return "Pole jest wymagane";
+    }
+    return "";
+};
+
+const validateEmail = (value: string) => {
+    if (!value.trim()) {
+        return "Pole jest wymagane";
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+        return "Email jest nieprawidłowy";
+    }
+    return "";
+};
+
+const validatePhone = (value: string) => {
+    if (!value.trim()) {
+        return "Numer telefonu jest wymagany";
+    }
+    const phoneRegex = /^[0-9]{9}$/;
+    if (!phoneRegex.test(value)) {
+        return "Numer telefonu jest nieprawidłowy";
+    }
+    return "";
+};
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setName(value);
+    setNameError(validateName(value));
+};
+
+const handleSurnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const value = event.target.value;
+  setSurname(value);
+  setSurnameError(validateName(value));
+};
+
+const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setEmail(value);
+    setEmailError(validateEmail(value));
+};
+
+const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setPhone(value);
+    setPhoneError(validatePhone(value));
+};
 
   return (
     <div className={styles.page}>
@@ -85,16 +146,20 @@ export default function Home() {
           </div>
         </Box>
         <Box className={styles.summary}>
-          <Typography variant="h5">Łączna cena: {room.price * 2} zł</Typography>
+          <Typography variant="h5">Łączna cena: {room.price *  getDaysDifference(arrivalDate, departureDate)} zł</Typography>
         </Box>
         <Box component="form" sx={{ marginTop: "2rem" }}>
           <Typography variant="h6" gutterBottom>
             Dane osobowe
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <TextField label="Imię" variant="outlined" fullWidth required />
-            <TextField label="Nazwisko" variant="outlined" fullWidth required />
+            <TextField value={name} onChange={handleNameChange} error={!!nameError} helperText={nameError} label="Imię" variant="outlined" fullWidth required />
+            <TextField value={surname} onChange={handleSurnameChange} error={!!surnameError} helperText={surnameError} label="Nazwisko" variant="outlined" fullWidth required />
             <TextField
+            value={email}
+            onChange={handleEmailChange}
+              error={!!emailError}
+              helperText={emailError}
               label="Email"
               type="email"
               variant="outlined"
@@ -102,6 +167,10 @@ export default function Home() {
               required
             />
             <TextField
+            value={phone}
+            onChange={handlePhoneChange}
+              error={!!phoneError}
+              helperText={phoneError}
               label="Numer telefonu"
               type="tel"
               variant="outlined"
