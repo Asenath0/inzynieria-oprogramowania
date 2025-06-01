@@ -1,7 +1,8 @@
-import { SearchBarProvider } from "@/components/providers/SearchBarValues";
+import { RoomsProvider } from "@/providers/Rooms";
+import { SearchBarProvider } from "@/providers/SearchBarValues";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import ThemeProviderWrapper from "../components/providers/ThemeProviderWrapper";
+import ThemeProviderWrapper from "../providers/ThemeProviderWrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,7 +29,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProviderWrapper>
-          <SearchBarProvider>{children}</SearchBarProvider>
+          <SearchBarProvider>
+            <RoomsProvider>{children}</RoomsProvider>
+          </SearchBarProvider>
         </ThemeProviderWrapper>
       </body>
     </html>

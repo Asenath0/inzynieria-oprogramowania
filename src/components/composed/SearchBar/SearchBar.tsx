@@ -1,5 +1,5 @@
 "use client";
-import { useSearchBar } from "@/components/providers/SearchBarValues";
+import { useSearchBar } from "@/providers/SearchBarValues";
 import FilterList from "@mui/icons-material/FilterList";
 import {
   Box,
@@ -16,8 +16,6 @@ import {
 import { useState } from "react";
 
 export default function SearchBar() {
-  const [priceRange, setPriceRange] = useState<number[]>([50, 500]);
-  const [standard, setStandard] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [arrivalDateError, setArrivalDateError] = useState("");
   const [departureDateError, setDepartureDateError] = useState("");
@@ -62,10 +60,14 @@ export default function SearchBar() {
     setDepartureDate,
     beds,
     setBeds,
+    priceRange,
+    setPriceRange,
+    standard,
+    setStandard,
   } = useSearchBar();
 
   const handlePriceChange = (event: Event, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
+    setPriceRange(newValue as [number, number]);
   };
   return (
     <Box sx={{ width: "80%", margin: "0 auto", padding: 2 }}>
@@ -132,6 +134,7 @@ export default function SearchBar() {
                 value={standard}
                 onChange={(e) => setStandard(e.target.value)}
               >
+                <MenuItem value="undefined">Wybierz standard</MenuItem>
                 <MenuItem value="ekonomiczny">Ekonomiczny</MenuItem>
                 <MenuItem value="standard">Standard</MenuItem>
                 <MenuItem value="superior">Superior</MenuItem>
