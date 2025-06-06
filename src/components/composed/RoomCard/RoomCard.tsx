@@ -10,21 +10,22 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-interface RoomCardProps {
+interface Room {
+  number: string;
   image: string;
-  price: number;
+  pricePerNight: number;
   standard: string;
-  beds: number;
+  capacity: number;
   description: string;
 }
 
 export default function RoomCard({
   image,
-  price,
+  pricePerNight,
   standard,
-  beds,
+  capacity,
   description,
-}: RoomCardProps) {
+}: Room) {
   const router = useRouter();
   return (
     <Card sx={{ display: "flex" }}>
@@ -37,13 +38,13 @@ export default function RoomCard({
       <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Cena: {price} zł / noc
+            Cena: {pricePerNight} zł / noc
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Standard: {standard}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Liczba łóżek: {beds}
+            Liczba łóżek: {capacity}
           </Typography>
           <Typography
             variant="body2"

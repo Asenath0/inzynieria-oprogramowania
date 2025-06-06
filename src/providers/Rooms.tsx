@@ -9,10 +9,11 @@ import {
 import { useSearchBar } from "./SearchBarValues";
 
 interface Room {
+  number: string;
   image: string;
+  pricePerNight: number;
   standard: string;
-  price: number;
-  beds: number;
+  capacity: number;
   description: string;
 }
 
@@ -25,12 +26,16 @@ const RoomsContext = createContext<RoomsContextType | undefined>(undefined);
 
 const fetchRooms = async (
   setRooms: (rooms: Room[]) => void,
-  filters: { beds?: number; priceRange?: [number, number]; standard?: string }
+  filters: {
+    capacity?: number;
+    priceRange?: [number, number];
+    standard?: string;
+  }
 ) => {
   try {
     const params = new URLSearchParams();
-    if (filters.beds !== undefined)
-      params.append("beds", filters.beds.toString());
+    if (filters.capacity !== undefined)
+      params.append("capacity", filters.capacity.toString());
     if (filters.priceRange !== undefined) {
       params.append("priceMin", filters.priceRange[0].toString());
       params.append("priceMax", filters.priceRange[1].toString());
@@ -58,7 +63,7 @@ export const RoomsProvider = ({ children }: { children: ReactNode }) => {
   const { beds, priceRange, standard } = useSearchBar();
 
   useEffect(() => {
-    fetchRooms(setRooms, { beds, priceRange, standard });
+    fetchRooms(setRooms, { capacity: beds, priceRange, standard });
   }, [beds, priceRange, standard]);
 
   return (
