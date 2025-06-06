@@ -38,7 +38,7 @@ export default function SearchBar() {
     return "";
   };
 
-  const handleArrivalDateChange = (e: any) => {
+  const handleArrivalDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setArrivalDate(value);
     setArrivalDateError(validateArrivalDate(value));
@@ -47,7 +47,9 @@ export default function SearchBar() {
     }
   };
 
-  const handleDepartureDateChange = (e: any) => {
+  const handleDepartureDateChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setDepartureDate(value);
     setDepartureDateError(validateDepartureDate(arrivalDate, value));
