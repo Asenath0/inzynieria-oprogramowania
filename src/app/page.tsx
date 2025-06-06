@@ -15,10 +15,11 @@ export default function Home() {
         <div className={styles.rooms}>
           {rooms.map((room, index) => (
             <RoomCard
+              number={room.number}
               image={room.image}
               standard={room.standard}
-              price={room.price}
-              beds={room.beds}
+              pricePerNight={room.pricePerNight}
+              capacity={room.capacity}
               description={room.description}
               key={index}
             />
