@@ -15,6 +15,7 @@ export default function Home() {
         <div className={styles.rooms}>
           {rooms.map((room, index) => (
             <RoomCard
+              id={room.id}
               number={room.number}
               image={room.image}
               standard={room.standard}

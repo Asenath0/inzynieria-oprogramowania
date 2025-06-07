@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 
 interface Room {
+  id: number;
   number: string;
   image: string;
   pricePerNight: number;
@@ -20,6 +21,7 @@ interface Room {
 }
 
 export default function RoomCard({
+  id,
   image,
   pricePerNight,
   standard,
@@ -58,7 +60,7 @@ export default function RoomCard({
           <Button
             size="small"
             color="primary"
-            onClick={() => router.push("/pokoj")}
+            onClick={() => router.push("/pokoj?roomId=" + id)}
           >
             Szczegóły
           </Button>

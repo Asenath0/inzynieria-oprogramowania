@@ -16,7 +16,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: (_, callback) => callback(null, true),
+    origin: ["http://localhost:3050", "https://hotelgo-snowy.vercel.app/"],
   })
 );
 
