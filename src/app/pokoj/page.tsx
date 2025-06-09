@@ -4,10 +4,11 @@ import SearchBar from "@/components/composed/SearchBar/SearchBar";
 import { RoomImage, useRooms } from "@/providers/Rooms";
 import { Button } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import styles from "./page.module.css";
 
-export default function Home() {
+// Move the page content to a separate component and wrap it in Suspense
+function RoomPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { fetchRoomImages } = useRooms();
@@ -15,16 +16,17 @@ export default function Home() {
   const roomId = searchParams.get("roomId");
 
   useEffect(() => {
+    if (!roomId) return;
     const fetchImages = async () => {
       try {
-        const roomImages = await fetchRoomImages(roomId || "");
+        const roomImages = await fetchRoomImages(roomId);
         setImages(roomImages);
       } catch (error) {
         console.error("Failed to fetch room images:", error);
       }
     };
     fetchImages();
-  }, []);
+  }, [roomId, fetchRoomImages]);
 
   return (
     <div className={styles.page}>
@@ -107,5 +109,13 @@ export default function Home() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RoomPageContent />
+    </Suspense>
   );
 }
