@@ -91,14 +91,14 @@ export const routerConfig = (app) => {
     }
   });
 
-  router.post("api/reservation/no-account", async (req, res) => {
+  router.post("/api/reservation/no-account", async (req, res) => {
     const { name, surname, email, phone, arrivalDate, departureDate, selectedRoomId } = req.body;
   
     if (!name || !surname || !email || !phone || !arrivalDate || !departureDate || !selectedRoomId) {
       return res.status(400).json({ error: "All fields are required" });
     }
   
-    const connection = await db.getConnection();
+    const connection = await mysql.createConnection(dbConfig);
     try {
       await connection.beginTransaction();
   
@@ -130,6 +130,7 @@ export const routerConfig = (app) => {
       res.status(500).json({ error: "Internal server error" });
     } finally {
       connection.release();
+      await connection.end();
     }
   });
 
