@@ -1,15 +1,27 @@
+/**
+ * @file Room details page component.
+ * @summary Fetches and displays details for a selected room, including images
+ * and amenities.
+ */
+
 "use client";
 import Header from "@/components/composed/Header/Header";
 import SearchBar from "@/components/composed/SearchBar/SearchBar";
 import { RoomImage, useRooms } from "@/providers/Rooms";
 import { Button } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import styles from "./page.module.css";
 
+/**
+ * @function RoomPageContent
+ * @summary Component that renders the content of the room details page.
+ * @description Fetches room images based on the selected room and displays
+ * them in a styled layout.
+ * @returns {JSX.Element} The rendered room details page content.
+ */
 function RoomPageContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { fetchRoomImages, selectedRoom } = useRooms();
   const [images, setImages] = useState<RoomImage[]>([]);
 
@@ -110,6 +122,13 @@ function RoomPageContent() {
   );
 }
 
+/**
+ * @function Home
+ * @summary Main component for the room details page.
+ * @description Wraps the RoomPageContent component in a Suspense boundary for
+ * handling loading states.
+ * @returns {JSX.Element} The rendered room details page with Suspense.
+ */
 export default function Home() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

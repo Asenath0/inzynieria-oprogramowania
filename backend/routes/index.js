@@ -1,10 +1,13 @@
-import dotenv from "dotenv";
-import express from "express";
-import mysql from "mysql2/promise";
-dotenv.config();
-const router = express.Router();
+/**
+ * @file Defines API routes for the backend application.
+ * @summary Contains route handlers for fetching rooms, room images, and
+ * creating reservations. Uses MySQL2 for database interactions.
+ */
 
-// https://sidorares.github.io/node-mysql2/docs
+const dotenv = require("dotenv").config();
+const express = require("express");
+const mysql = require("mysql2/promise");
+const router = express.Router();
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -14,7 +17,19 @@ const dbConfig = {
   database: process.env.DB_NAME,
 };
 
-export const routerConfig = (app) => {
+exports.routerConfig = (app) => {
+  /**
+   * @route GET /api/rooms
+   * @summary Fetches rooms based on specified filters.
+   * @description Retrieves room data from the database, applying filters for
+   * standard, capacity, and price range.
+   * @param {string} [standard] - The standard of the room.
+   * @param {number} [capacity] - The capacity of the room.
+   * @param {number} [priceMin] - The minimum price per night.
+   * @param {number} [priceMax] - The maximum price per night.
+   * @returns {object[]} An array of room objects.
+   * @throws {500} - Database error.
+   */
   router.get("/api/rooms", async (req, res) => {
     try {
       const { standard, capacity, priceMin, priceMax } = req.query;
@@ -67,6 +82,16 @@ export const routerConfig = (app) => {
     }
   });
 
+  /**
+   * @route GET /api/room/images
+   * @summary Fetches images for a specific room.
+   * @description Retrieves image paths and descriptions from the database for a
+   * given room ID.
+   * @param {string} roomId - The ID of the room.
+   * @returns {object[]} An array of image objects with path and description.
+   * @throws {400} - Missing roomId parameter.
+   * @throws {500} - Database error.
+   */
   router.get("/api/room/images", async (req, res) => {
     const { roomId } = req.query;
     if (!roomId) {
@@ -91,37 +116,65 @@ export const routerConfig = (app) => {
     }
   });
 
+  /**
+   * @route POST /api/reservation/no-account
+   * @summary Creates a new reservation without an existing account.
+   * @description Creates a new user, payment record, and reservation in the database.
+   * @param {string} name - User's name.
+   * @param {string} surname - User's surname.
+   * @param {string} email - User's email.
+   * @param {string} phone - User's phone number.
+   * @param {string} arrivalDate - Reservation arrival date.
+   * @param {string} departureDate - Reservation departure date.
+   * @param {string} selectedRoomId - ID of the selected room.
+   * @returns {object} A success message.
+   * @throws {400} - Missing required fields.
+   * @throws {500} - Internal server error.
+   */
   router.post("/api/reservation/no-account", async (req, res) => {
-    const { name, surname, email, phone, arrivalDate, departureDate, selectedRoomId } = req.body;
-  
-    if (!name || !surname || !email || !phone || !arrivalDate || !departureDate || !selectedRoomId) {
+    const {
+      name,
+      surname,
+      email,
+      phone,
+      arrivalDate,
+      departureDate,
+      selectedRoomId,
+    } = req.body;
+
+    if (
+      !name ||
+      !surname ||
+      !email ||
+      !phone ||
+      !arrivalDate ||
+      !departureDate ||
+      !selectedRoomId
+    ) {
       return res.status(400).json({ error: "All fields are required" });
     }
-  
+
     const connection = await mysql.createConnection(dbConfig);
     try {
       await connection.beginTransaction();
-  
-      // Create a new user with accountTypeId = 1
-      const [userResult] = await connection.query(
+
+      const [userResult] = await connection.execute(
         "INSERT INTO `user` (accountTypeId, name, lastName, email, phoneNumber) VALUES (?, ?, ?, ?, ?)",
         [1, name, surname, email, phone]
       );
       const userId = userResult.insertId;
-  
-      // Create a new payment record
-      const [paymentResult] = await connection.query(
+
+      const [paymentResult] = await connection.execute(
         "INSERT INTO payment (amountDue, paid) VALUES (?, ?)",
-        [0, 0] // Assuming no payment is made initially
+        [0, 0]
       );
       const paymentId = paymentResult.insertId;
-  
-      // Create a new reservation tied to the user and payment
-      await connection.query(
+
+      await connection.execute(
         "INSERT INTO reservation (beginDate, endDate, roomId, userId, paymentId) VALUES (?, ?, ?, ?, ?)",
         [arrivalDate, departureDate, selectedRoomId, userId, paymentId]
       );
-  
+
       await connection.commit();
       res.status(201).json({ message: "Reservation created successfully" });
     } catch (error) {

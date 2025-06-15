@@ -1,7 +1,13 @@
-import cors from "cors";
-import * as dotenv from "dotenv";
-import express from "express";
-import { routerConfig } from "./routes/index.js";
+/**
+ * @file Main application file for the backend server.
+ * @summary Initializes and configures the Express app, sets up middleware,
+ * defines routes, and starts the server.
+ */
+
+const cors = require("cors");
+const dotenv = require("dotenv");
+const express = require("express");
+const { routerConfig } = require("./routes/index.js");
 
 dotenv.config();
 
@@ -27,3 +33,5 @@ routerConfig(app);
 app.listen(PORT, () => {
   console.info(`Server started on port ${PORT}`);
 });
+
+module.exports = app;

@@ -1,5 +1,11 @@
+/**
+ * @file Reservation page component.
+ * @summary Allows users to enter their details and confirm a reservation.
+ */
+
 "use client";
 import Header from "@/components/composed/Header/Header";
+import { useRooms } from "@/providers/Rooms";
 import { useSearchBar } from "@/providers/SearchBarValues";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -16,11 +22,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./page.module.css";
-import { useRooms } from "@/providers/Rooms";
 
+/**
+ * @function Home
+ * @summary Renders the reservation page.
+ * @returns {JSX.Element} The rendered reservation page.
+ */
 export default function Home() {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState("payLater");
@@ -32,8 +42,7 @@ export default function Home() {
   const [surnameError, setSurnameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const {selectedRoom} = useRooms(); 
-
+  const { selectedRoom } = useRooms();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
@@ -105,7 +114,7 @@ export default function Home() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (selectedRoom === null) return
+    if (selectedRoom === null) return;
 
     const reservationData = {
       name,
@@ -114,17 +123,20 @@ export default function Home() {
       phone,
       arrivalDate,
       departureDate,
-      selectedRoomId: selectedRoom?.id
+      selectedRoomId: selectedRoom?.id,
     };
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "api/reservation/no-account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reservationData),
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "api/reservation/no-account",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reservationData),
+        }
+      );
 
       if (response.ok) {
         router.push("/rezerwacja/podsumowanie");
@@ -136,7 +148,7 @@ export default function Home() {
     }
   };
 
-  if (selectedRoom == null || !selectedRoom) return <div>Nie znaleziono</div>
+  if (selectedRoom == null || !selectedRoom) return <div>Nie znaleziono</div>;
 
   return (
     <div className={styles.page}>
@@ -168,17 +180,24 @@ export default function Home() {
               <HotelIcon /> Pokój: <strong>{selectedRoom.standard}</strong>
             </Typography>
             <Typography>
-              <AttachMoneyIcon /> Cena: <strong>{selectedRoom.pricePerNight} zł / noc</strong>
+              <AttachMoneyIcon /> Cena:{" "}
+              <strong>{selectedRoom.pricePerNight} zł / noc</strong>
             </Typography>
           </div>
         </Box>
         <Box className={styles.summary}>
           <Typography variant="h5">
             Łączna cena:{" "}
-            {selectedRoom.pricePerNight * getDaysDifference(arrivalDate, departureDate)} zł
+            {selectedRoom.pricePerNight *
+              getDaysDifference(arrivalDate, departureDate)}{" "}
+            zł
           </Typography>
         </Box>
-        <Box component="form" sx={{ marginTop: "2rem" }} onSubmit={handleSubmit}>
+        <Box
+          component="form"
+          sx={{ marginTop: "2rem" }}
+          onSubmit={handleSubmit}
+        >
           <Typography variant="h6" gutterBottom>
             Dane osobowe
           </Typography>
@@ -305,11 +324,7 @@ export default function Home() {
                   specjalnych."
               />
             </Box>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" variant="contained" color="primary">
               {selectedOption === "payNow"
                 ? "Przejdź do płatności"
                 : "Przejdź do podsumowania"}

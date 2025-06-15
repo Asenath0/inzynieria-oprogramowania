@@ -6,7 +6,9 @@ Projekt realizowany w ramach zajęć z inżynierii oprogramowania w roku 2024/20
 
 # Uruchamianie wersji dev
 
-1. Instalacja pakietów:
+1. Import bazy danych do wybranego silnika mysql
+
+2. Instalacja pakietów:
 
 ```
 yarn i
@@ -15,19 +17,19 @@ yarn i
 cd ..
 ```
 
-2. Uzupełnienie zmiennych środowyskowych
+3. Uzupełnienie zmiennych środowyskowych
 
 - Skopiować plik .env.example do pliku .env i uzupełnić poprawnymi danymi
 - Powtórzyć to samo w folderze backend
 
-3. Uruchomienie backendu
+4. Uruchomienie backendu
 
 ```
 cd backend
 yarn start:dev
 ```
 
-4.  Uruchomienie frontendu
+5.  Uruchomienie frontendu
     > Wymaga to odpalenie nowego terminala w folderze projektu
 
 ```

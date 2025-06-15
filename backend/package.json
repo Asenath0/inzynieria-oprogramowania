@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "start": "node app.js",
-    "start:dev": "node --watch app.js"
+    "start:dev": "node --watch app.js",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,7 +14,9 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jest": "^30.0.0",
     "morgan": "~1.9.1",
-    "mysql2": "^3.14.1"
+    "mysql2": "^3.14.1",
+    "supertest": "^7.1.1"
   }
 }
