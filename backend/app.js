@@ -22,7 +22,11 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3050", "https://hotelgo-snowy.vercel.app/"],
+    origin: [
+      "http://hotelgo.kpstr.ovh:3000",
+      "http://localhost:3000",
+      "https://hotelgo-snowy.vercel.app/",
+    ],
   })
 );
 
