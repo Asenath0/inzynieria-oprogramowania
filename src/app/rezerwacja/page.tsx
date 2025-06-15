@@ -16,19 +16,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import styles from "./page.module.css";
-
-const room = {
-  image:
-    "https://hotel-amaryllis.pl/components/com_vikbooking/resources/uploads/r_pokoje-1-osobowy-3.jpg",
-  standard: "standard",
-  price: 255,
-  beds: 1,
-  description:
-    "Wyposażenie pokoju jednoosobowego: wygodne łóżko, stolik z fotelem, biurko do pracy, krzesło, sejf elektroniczny, bezprzewodowy dostęp do internetu, łazienka z wanną. Śniadania są serwowane w formie bufetu szwedzkiego i angielskiego. W cenę pokoju wliczony jest darmowy, monitorowany parking.",
-};
+import { useRooms } from "@/providers/Rooms";
 
 export default function Home() {
   const router = useRouter();
@@ -41,6 +32,8 @@ export default function Home() {
   const [surnameError, setSurnameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const {selectedRoom} = useRooms(); 
+
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
@@ -109,6 +102,42 @@ export default function Home() {
     setPhoneError(validatePhone(value));
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (selectedRoom === null) return
+
+    const reservationData = {
+      name,
+      surname,
+      email,
+      phone,
+      arrivalDate,
+      departureDate,
+      selectedRoomId: selectedRoom?.id
+    };
+
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "api/reservation/no-account", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reservationData),
+      });
+
+      if (response.ok) {
+        router.push("/rezerwacja/podsumowanie");
+      } else {
+        console.error("Failed to submit reservation");
+      }
+    } catch (error) {
+      console.error("Error submitting reservation:", error);
+    }
+  };
+
+  if (selectedRoom == null || !selectedRoom) return <div>Nie znaleziono</div>
+
   return (
     <div className={styles.page}>
       <Header />
@@ -136,20 +165,20 @@ export default function Home() {
           </div>
           <div className={styles.boxColumn}>
             <Typography>
-              <HotelIcon /> Pokój: <strong>{room.standard}</strong>
+              <HotelIcon /> Pokój: <strong>{selectedRoom.standard}</strong>
             </Typography>
             <Typography>
-              <AttachMoneyIcon /> Cena: <strong>{room.price} zł / noc</strong>
+              <AttachMoneyIcon /> Cena: <strong>{selectedRoom.pricePerNight} zł / noc</strong>
             </Typography>
           </div>
         </Box>
         <Box className={styles.summary}>
           <Typography variant="h5">
             Łączna cena:{" "}
-            {room.price * getDaysDifference(arrivalDate, departureDate)} zł
+            {selectedRoom.pricePerNight * getDaysDifference(arrivalDate, departureDate)} zł
           </Typography>
         </Box>
-        <Box component="form" sx={{ marginTop: "2rem" }}>
+        <Box component="form" sx={{ marginTop: "2rem" }} onSubmit={handleSubmit}>
           <Typography variant="h6" gutterBottom>
             Dane osobowe
           </Typography>
@@ -277,9 +306,9 @@ export default function Home() {
               />
             </Box>
             <Button
+              type="submit"
               variant="contained"
               color="primary"
-              onClick={() => router.push("/rezerwacja/podsumowanie")}
             >
               {selectedOption === "payNow"
                 ? "Przejdź do płatności"

@@ -1,4 +1,5 @@
 "use client";
+import { useRooms } from "@/providers/Rooms";
 import {
   Box,
   Button,
@@ -22,6 +23,7 @@ interface Room {
 
 export default function RoomCard({
   id,
+  number,
   image,
   pricePerNight,
   standard,
@@ -29,6 +31,12 @@ export default function RoomCard({
   description,
 }: Room) {
   const router = useRouter();
+  const {setSelectedRoom} = useRooms();
+
+  const handleButton = (room: Room) => {
+    setSelectedRoom(room);
+    router.push("/pokoj");
+  }
   return (
     <Card sx={{ display: "flex" }}>
       <CardMedia
@@ -60,7 +68,7 @@ export default function RoomCard({
           <Button
             size="small"
             color="primary"
-            onClick={() => router.push("/pokoj?roomId=" + id)}
+            onClick={() => handleButton({ id, number, image, pricePerNight, standard, capacity, description })}
           >
             Szczegóły
           </Button>

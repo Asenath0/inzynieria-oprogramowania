@@ -7,26 +7,24 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import styles from "./page.module.css";
 
-// Move the page content to a separate component and wrap it in Suspense
 function RoomPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { fetchRoomImages } = useRooms();
+  const { fetchRoomImages, selectedRoom } = useRooms();
   const [images, setImages] = useState<RoomImage[]>([]);
-  const roomId = searchParams.get("roomId");
 
   useEffect(() => {
-    if (!roomId) return;
+    if (selectedRoom == null || !selectedRoom.id) return;
     const fetchImages = async () => {
       try {
-        const roomImages = await fetchRoomImages(roomId);
+        const roomImages = await fetchRoomImages(selectedRoom.id.toString());
         setImages(roomImages);
       } catch (error) {
         console.error("Failed to fetch room images:", error);
       }
     };
     fetchImages();
-  }, [roomId, fetchRoomImages]);
+  }, [selectedRoom, fetchRoomImages]);
 
   return (
     <div className={styles.page}>

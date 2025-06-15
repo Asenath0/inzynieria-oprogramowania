@@ -22,6 +22,8 @@ type RoomsContextType = {
   rooms: Room[];
   setRooms: (rooms: Room[]) => void;
   fetchRoomImages: (roomId: string) => Promise<RoomImage[]>;
+  selectedRoom: Room | null;
+  setSelectedRoom: (room: Room | null) => void;
 };
 
 const RoomsContext = createContext<RoomsContextType | undefined>(undefined);
@@ -84,6 +86,7 @@ const fetchRoomImages = async (roomId: string): Promise<RoomImage[]> => {
 };
 
 export const RoomsProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [rooms, setRooms] = useState<Room[]>([]);
   const { beds, priceRange, standard } = useSearchBar();
 
@@ -97,6 +100,8 @@ export const RoomsProvider = ({ children }: { children: ReactNode }) => {
         rooms,
         setRooms,
         fetchRoomImages,
+        selectedRoom,
+        setSelectedRoom
       }}
     >
       {children}
